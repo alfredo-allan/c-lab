@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-bs-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C-Lab · Laboratório de Programação Estruturada</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ================= NAVBAR ================= -->
+<nav class="navbar navbar-expand-lg fixed-top">
+  <div class="container">
+    <a class="brand-logo" href="#inicio"><span class="chip">C</span>-Lab</a>
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#nav" aria-label="Menu"><i class="bi bi-list fs-3 text-light"></i></button>
+    <div class="collapse navbar-collapse" id="nav">
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
+        <li class="nav-item"><a class="nav-link" href="#inicio">Início</a></li>
+        <li class="nav-item"><a class="nav-link" href="#trilha">Trilha</a></li>
+        <li class="nav-item"><a class="nav-link" href="#lab">Laboratório</a></li>
+        <li class="nav-item"><a class="nav-link" href="#simulado">Simulado</a></li>
+        <li class="nav-item"><a class="nav-link" href="#" id="navGloss"><i class="bi bi-lightbulb me-1 text-warning"></i>Glossário</a></li>
+        <li class="nav-item ms-lg-2"><span class="nav-progress" id="navProgress">0% concluído</span></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- ================= HERO ================= -->
+<header id="inicio">
+  <div class="grid-bg"></div>
+  <div class="hero-glow g1"></div><div class="hero-glow g2"></div>
+  <div id="glyphs"></div>
+  <div class="container position-relative">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-6">
+        <span class="badge-pill hero-anim"><span class="dot"></span>Programação Estruturada em C · UNIP</span>
+        <h1 class="hero-title mt-3 hero-anim">C-Lab<br><span class="grad">Laboratório de Programação Estruturada</span></h1>
+        <p class="hero-sub mt-3 hero-anim">Escreva C de verdade e veja por dentro: a pilha de memória mudando linha por linha, ponteiros apontando para as caixas certas e arquivos <code>.txt</code> sendo gravados num diretório virtual.</p>
+        <div class="d-flex flex-wrap gap-2 mt-4 hero-anim">
+          <a href="#lab" class="btn btn-clab btn-lg px-4"><i class="bi bi-terminal me-2"></i>Abrir o Laboratório</a>
+          <a href="#trilha" class="btn btn-ghost btn-lg px-4"><i class="bi bi-signpost-2 me-2"></i>Ver a trilha</a>
+        </div>
+        <div class="d-flex gap-4 mt-4 mini-stats hero-anim">
+          <span><i class="bi bi-code-slash text-success me-1"></i><span id="hsEx"></span> exemplos</span>
+          <span><i class="bi bi-patch-question text-info me-1"></i><span id="hsQ"></span> questões</span>
+          <span><i class="bi bi-trophy text-warning me-1"></i><span id="hsC"></span> desafios</span>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="win" id="heroWin">
+          <div class="win-bar"><i class="d" style="background:#f85149"></i><i class="d" style="background:#d29922"></i><i class="d" style="background:#3fb950"></i><span class="ms-2">ponteiros.c</span></div>
+          <pre class="hero-code" id="heroCode"></pre>
+          <div class="hero-mem">
+            <div class="mem-box" id="hmX"><small>int x · 0x7ffd4a3c</small><b id="hmXv">10</b></div>
+            <span class="text-info"><i class="bi bi-arrow-left"></i></span>
+            <div class="mem-box ptr"><small>int *p · 0x7ffd4a30</small><b class="text-info">&amp;x = 0x7ffd4a3c</b></div>
+            <span class="ms-auto text-success" id="hmOut">$ x = 10</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-cue"><i class="bi bi-mouse d-block fs-5 mb-1"></i>role para começar</div>
+</header>
+
+<!-- ================= DASHBOARD ================= -->
+<section class="py-5" id="dashboard">
+  <div class="container">
+    <div class="row g-3">
+      <div class="col-6 col-lg-3"><div class="surface stat-card d-flex align-items-center gap-3">
+        <svg class="ring" viewBox="0 0 80 80"><circle class="bg" cx="40" cy="40" r="32"/><circle class="fg" id="ringAll" cx="40" cy="40" r="32" stroke-dasharray="201" stroke-dashoffset="201"/></svg>
+        <div><div class="stat-num" id="stAll">0%</div><div class="text-muted2 small">progresso geral</div></div></div></div>
+      <div class="col-6 col-lg-3"><div class="surface stat-card"><i class="bi bi-patch-check text-info fs-4"></i><div class="stat-num" id="stQ">0/0</div><div class="text-muted2 small">questões acertadas</div></div></div>
+      <div class="col-6 col-lg-3"><div class="surface stat-card"><i class="bi bi-play-circle text-success fs-4"></i><div class="stat-num" id="stE">0/0</div><div class="text-muted2 small">exemplos executados</div></div></div>
+      <div class="col-6 col-lg-3"><div class="surface stat-card"><i class="bi bi-trophy text-warning fs-4"></i><div class="stat-num" id="stC">0/0</div><div class="text-muted2 small">desafios concluídos</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TRILHA ================= -->
+<section class="py-5" id="trilha">
+  <div class="container">
+    <div class="row mb-4">
+      <div class="col-lg-8">
+        <div class="eyebrow mb-2">// trilha de aprendizado</div>
+        <h2 class="section-title display-6">Do <code>printf</code> ao <code>fclose</code>, um módulo por vez</h2>
+        <p class="text-muted2">Cada módulo tem dicas rápidas, uma comparação visual, um mini-desafio de previsão e exemplos prontos para rodar no laboratório.</p>
+      </div>
+    </div>
+    <div class="track" id="track">
+      <div class="track-line"></div><div class="track-progress"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= LABORATÓRIO ================= -->
+<section id="lab">
+  <div class="container-xl">
+    <div class="d-flex flex-wrap justify-content-between align-items-end mb-3 gap-2 lab-head">
+      <div>
+        <div class="eyebrow mb-1">// simulador nativo de C</div>
+        <h2 class="section-title h1 mb-0">Laboratório</h2>
+      </div>
+      <div class="mini-stats"><kbd>Ctrl</kbd>+<kbd>Enter</kbd> executa · <kbd>F10</kbd> próximo passo</div>
+    </div>
+
+    <div class="row g-3">
+      <!-- Editor + Terminal -->
+      <div class="col-lg-7">
+        <div class="panel mb-3">
+          <div class="lab-toolbar">
+            <select class="form-select form-select-sm" id="exSelect" aria-label="Exemplos e desafios"></select>
+            <button class="btn btn-ghost btn-sm" id="btnLoad" title="Carregar exemplo selecionado"><i class="bi bi-folder2-open"></i> <span class="lbl">Carregar Exemplo</span></button>
+            <div class="ms-auto d-flex gap-2 flex-wrap">
+              <button class="btn btn-ghost btn-sm" id="btnDebug" title="Executar linha por linha"><i class="bi bi-bug"></i> <span class="lbl">Passo a Passo</span></button>
+              <button class="btn btn-term btn-sm" id="btnRun" title="Ctrl+Enter"><i class="bi bi-play-fill"></i> <span class="lbl">Compilar &amp; Executar</span></button>
+            </div>
+          </div>
+          <div class="challenge-box" id="chalBox"></div>
+          <div class="debug-bar" id="debugBar">
+            <span class="mono small text-success me-1"><i class="bi bi-bug-fill"></i> depurando · linha <b id="dbgLine">-</b></span>
+            <button class="btn btn-term btn-sm" id="btnStep"><i class="bi bi-arrow-down-right-square"></i> Próximo passo</button>
+            <button class="btn btn-ghost btn-sm" id="btnAuto"><i class="bi bi-play"></i> Auto</button>
+            <button class="btn btn-ghost btn-sm" id="btnCont"><i class="bi bi-fast-forward"></i> Continuar</button>
+            <button class="btn btn-ghost btn-sm text-danger" id="btnStop"><i class="bi bi-stop-fill"></i> Parar</button>
+          </div>
+          <div class="editor">
+            <div class="gutter" id="gutter"></div>
+            <div class="code-area">
+              <div class="line-hl" id="lineHl"></div>
+              <pre id="hl" aria-hidden="true"></pre>
+              <textarea id="code" spellcheck="false" autocapitalize="off" autocomplete="off" aria-label="Editor de código C"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel-slot" id="termSlot"><div class="panel floatable" id="termPanel" data-title="Terminal">
+          <div class="panel-head"><span><i class="bi bi-grip-vertical grip"></i><i class="bi bi-terminal me-1"></i><b>Terminal</b> · stdout / stderr</span>
+            <span class="win-actions">
+              <button class="btn btn-ghost btn-sm py-0 px-2" id="btnClear" title="Limpar console"><i class="bi bi-eraser"></i> <span class="lbl">Limpar Console</span></button>
+              <button class="btn btn-ghost btn-sm py-0 px-2 float-only" data-side title="Posicionar ao lado do código"><i class="bi bi-layout-split"></i></button>
+              <button class="btn btn-ghost btn-sm py-0 px-2" data-float title="Destacar janela (arrastar para o lado do código)"><i class="bi bi-window-stack"></i></button>
+            </span></div>
+          <div class="stdin-row"><span class="mono small text-muted2">stdin&gt;</span><input id="stdin" placeholder="Entrada para scanf (ex.: 8.5 7 Maria)" aria-label="Entrada padrão"></div>
+          <div class="terminal" id="term"></div>
+        </div></div>
+      </div>
+
+      <!-- Memória + FS -->
+      <div class="col-lg-5">
+        <div class="panel-slot mb-3" id="memSlot"><div class="panel floatable" id="memPanel" data-title="Memória RAM">
+          <div class="panel-head"><span><i class="bi bi-grip-vertical grip"></i><i class="bi bi-memory me-1"></i><b>Memória RAM</b> <span id="memLabel" class="ms-1">aguardando execução</span></span>
+            <span class="win-actions"><button class="btn btn-ghost btn-sm py-0 px-2" data-float title="Destacar janela (arrastar)"><i class="bi bi-window-stack"></i></button></span></div>
+          <ul class="nav nav-tabs px-2 pt-1 small" role="tablist">
+            <li class="nav-item"><button class="nav-link active py-1" data-bs-toggle="tab" data-bs-target="#tabStack" type="button">Stack &amp; Globais</button></li>
+            <li class="nav-item"><button class="nav-link py-1" data-bs-toggle="tab" data-bs-target="#tabPtr" type="button">Ponteiros em ação <span class="badge bg-primary-subtle text-info" id="ptrCount">0</span></button></li>
+          </ul>
+          <div class="tab-content">
+            <div class="tab-pane fade show active" id="tabStack"><div class="mem-scroll" id="memStack"></div></div>
+            <div class="tab-pane fade" id="tabPtr"><div class="mem-scroll" id="memPtr"></div></div>
+          </div>
+          <div class="mem-legend"><span class="text-success">■</span> alterado agora · <span class="text-warning">lixo</span> = não inicializada · a pilha cresce para endereços menores ↓</div>
+        </div></div>
+
+        <div class="panel">
+          <div class="panel-head"><span><i class="bi bi-hdd me-1"></i><b>Diretório Local</b> · ~/c-lab/</span>
+            <span class="d-flex gap-1">
+              <button class="btn btn-ghost btn-sm py-0 px-2" id="btnNewFile" title="Criar arquivo"><i class="bi bi-file-earmark-plus"></i></button>
+              <button class="btn btn-ghost btn-sm py-0 px-2" id="btnWipeFs" title="Apagar todos os arquivos"><i class="bi bi-trash3"></i></button>
+            </span></div>
+          <div class="fs-list" id="fsList"></div>
+          <div class="fs-handles" id="fsHandles">FILE* abertos: nenhum</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SIMULADO ================= -->
+<section id="simulado">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-9">
+        <div class="eyebrow mb-2">// banco de questões</div>
+        <h2 class="section-title display-6">Simulado interativo</h2>
+        <p class="text-muted2">Feedback imediato: depois de responder, cada alternativa mostra <b>por que</b> está certa ou errada.</p>
+        <div class="d-flex flex-wrap gap-2 quiz-filter mb-3" id="quizFilter"></div>
+        <div class="surface q-card" id="quizCard"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="py-4">
+  <div class="container d-flex flex-wrap justify-content-between gap-2">
+    <span><span class="mono">C-Lab</span> · Programação Estruturada em C — estudo para exames</span>
+    <span class="mono small">o simulador interpreta um subconjunto didático de C (sem struct e matrizes 2D)</span>
+  </div>
+</footer>
+
+<!-- Modal de módulo -->
+<div class="modal fade" id="modModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title" id="modTitle"></h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button></div>
+      <div class="modal-body">
+        <ul class="nav nav-tabs mb-3" role="tablist">
+          <li class="nav-item"><button class="nav-link active" id="tbTips" data-bs-toggle="tab" data-bs-target="#mTips" type="button"><i class="bi bi-lightbulb me-1"></i>Dicas rápidas</button></li>
+          <li class="nav-item"><button class="nav-link" id="tbCmp" data-bs-toggle="tab" data-bs-target="#mCmp" type="button"><i class="bi bi-layout-split me-1"></i>Comparação</button></li>
+          <li class="nav-item"><button class="nav-link" id="tbMini" data-bs-toggle="tab" data-bs-target="#mMini" type="button"><i class="bi bi-puzzle me-1"></i>Mini-desafio</button></li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane fade show active" id="mTips"></div>
+          <div class="tab-pane fade" id="mCmp"></div>
+          <div class="tab-pane fade" id="mMini"></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" id="modQuiz"><i class="bi bi-patch-question me-1"></i>Questões do módulo</button>
+        <button class="btn btn-clab" id="modOpen"><i class="bi bi-terminal me-1"></i>Abrir exemplo no Lab</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de conceito (glossário) -->
+<div class="modal fade" id="conceptModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div><div class="eyebrow mb-1" id="cEyebrow"></div><h5 class="modal-title" id="cTitle"></h5></div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+      <div class="modal-body" id="cBody"></div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost me-auto d-none" id="cBack"><i class="bi bi-arrow-left me-1"></i>Voltar às dicas</button>
+        <button class="btn btn-ghost" id="cAll"><i class="bi bi-grid me-1"></i>Todos os conceitos</button>
+        <button class="btn btn-clab" id="cLab"><i class="bi bi-terminal me-1"></i>Testar no Lab</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de arquivo -->
+<div class="modal fade" id="fileModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title mono"><i class="bi bi-file-earmark-text text-info me-2"></i><span id="fmName"></span></h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button></div>
+      <div class="modal-body">
+        <div class="mini-stats mb-2" id="fmMeta"></div>
+        <pre class="file-view" id="fmView"></pre>
+        <textarea class="form-control mono d-none" id="fmEdit" rows="12" style="background:#010409;border-color:var(--border);font-size:.84rem"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost text-danger me-auto" id="fmDel"><i class="bi bi-trash3 me-1"></i>Excluir</button>
+        <button class="btn btn-ghost" id="fmEditBtn"><i class="bi bi-pencil me-1"></i>Editar</button>
+        <button class="btn btn-clab d-none" id="fmSave"><i class="bi bi-save me-1"></i>Salvar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<!-- Ordem importa: conteúdo -> interpretador -> aplicação -->
+<script src="js/content.js"></script>
+<script src="js/interpreter.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
